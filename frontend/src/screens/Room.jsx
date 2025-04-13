@@ -116,33 +116,70 @@ const RoomPage = () => {
   ]);
 
   return (
-    <div>
-      <h1>Room Page</h1>
-      <h4>{remoteSocketId ? 'Connected' : 'No one in room'}</h4>
-      {myStream && <button onClick={sendStreams}>Send Stream</button>}
-      {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
-      {myStream && (
-        <>
-          <h1>My Stream</h1>
-          <ReactPlayer
-            playing
-            muted
-            height="100px"
-            width="200px"
-            url={myStream}
-          />
-        </>
-      )}
-      {remoteStream && (
-        <>
-          <h1>Remote Stream</h1>
-          <ReactPlayer
-            playing
-            height="100px"
-            width="200px"
-            url={remoteStream}
-          />
-        </>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center px-6 py-10 space-y-8">
+      <h1 className="text-4xl font-bold text-gray-800">Room Page</h1>
+      <h4
+        className={`text-xl ${
+          remoteSocketId ? 'text-green-600' : 'text-red-500'
+        }`}
+      >
+        {remoteSocketId ? 'Connected' : 'No one in room'}
+      </h4>
+
+      <div className="flex space-x-4">
+        {myStream && (
+          <button
+            onClick={sendStreams}
+            className="px-5 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
+          >
+            Send Stream
+          </button>
+        )}
+        {remoteSocketId && (
+          <button
+            onClick={handleCallUser}
+            className="px-5 py-3 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition"
+          >
+            CALL
+          </button>
+        )}
+      </div>
+
+      {(myStream || remoteStream) && (
+        <div className="w-full max-w-6xl flex flex-col md:flex-row justify-center items-center md:space-x-8 space-y-6 md:space-y-0 mt-10">
+          {myStream && (
+            <div className="flex flex-col items-center w-full md:w-1/2 bg-white p-6 rounded-2xl shadow-xl">
+              <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+                My Stream
+              </h2>
+              <div className="w-full aspect-video border rounded-xl overflow-hidden shadow">
+                <ReactPlayer
+                  playing
+                  muted
+                  width="100%"
+                  height="100%"
+                  url={myStream}
+                />
+              </div>
+            </div>
+          )}
+
+          {remoteStream && (
+            <div className="flex flex-col items-center w-full md:w-1/2 bg-white p-6 rounded-2xl shadow-xl">
+              <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+                Remote Stream
+              </h2>
+              <div className="w-full aspect-video border rounded-xl overflow-hidden shadow">
+                <ReactPlayer
+                  playing
+                  width="100%"
+                  height="100%"
+                  url={remoteStream}
+                />
+              </div>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
